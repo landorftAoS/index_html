@@ -119,7 +119,7 @@
 <script>
   const paras = [...document.querySelectorAll('.paragraph')];
   const btn = document.getElementById('startBtn');
-  let started = false;
+  let currentParagraph = 0;
 
   function burstHeart() {
     const h = document.createElement('div');
@@ -134,19 +134,23 @@
 
   setInterval(burstHeart, 700);
 
+  // One message appears per tap/click.
   btn.addEventListener('click', () => {
-    if (started) {
-      document.getElementById('letter').scrollIntoView({behavior:'smooth',block:'start'});
+    if (currentParagraph >= paras.length) {
+      document.getElementById('letter').scrollIntoView({behavior:'smooth', block:'start'});
       return;
     }
-    started = true;
-    btn.textContent = 'Te amo, Eli 💗';
-    paras.forEach((p, i) => {
-      setTimeout(() => {
-        p.classList.add('show');
-        if (i === 0) p.scrollIntoView({behavior:'smooth',block:'center'});
-      }, i * 900);
-    });
+
+    const paragraph = paras[currentParagraph];
+    paragraph.classList.add('show');
+    setTimeout(() => paragraph.scrollIntoView({behavior:'smooth', block:'center'}), 80);
+    currentParagraph++;
+
+    if (currentParagraph < paras.length) {
+      btn.textContent = 'Siguiente 💗';
+    } else {
+      btn.textContent = 'Te amo, Eli 💗';
+    }
   });
 
   // gentle tap sparkles
